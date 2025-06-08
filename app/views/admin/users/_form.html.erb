@@ -1,0 +1,51 @@
+<%= form_with(model: [:admin, user], local: true) do |form| %>
+  <% if user.errors.any? %>
+    <div class="alert alert-danger">
+      <h4 class="alert-heading"><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h4>
+      <ul class="mb-0">
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :first_name, class: "form-label" %>
+    <%= form.text_field :first_name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :last_name, class: "form-label" %>
+    <%= form.text_field :last_name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :student_id, "Student ID", class: "form-label" %>
+    <%= form.text_field :student_id, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :email, class: "form-label" %>
+    <%= form.text_field :email, class: "form-control" %>
+  </div>
+
+  <div class="form-check mb-2">
+    <%= form.check_box :student, class: "form-check-input" %>
+    <%= form.label :student, class: "form-check-label" %>
+  </div>
+
+  <div class="form-check mb-2">
+    <%= form.check_box :instructor, class: "form-check-input" %>
+    <%= form.label :instructor, class: "form-check-label" %>
+  </div>
+
+  <div class="form-check mb-4">
+    <%= form.check_box :admin, class: "form-check-input" %>
+    <%= form.label :admin, class: "form-check-label" %>
+  </div>
+
+  <div>
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

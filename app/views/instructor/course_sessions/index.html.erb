@@ -1,0 +1,49 @@
+<% content_for :title, "Course Sessions for #{@course.course_number} – #{@course.title}" %>
+
+<h1 class="mb-4">Course Sessions</h1>
+
+<p>
+  <strong>Instructor:</strong>
+  <%= @course.instructor&.full_name || @course.instructor&.email %><br>
+  <strong>Schedule:</strong>
+  <%= @course.semester %> <%= @course.year %> –
+  <%= @course.start_date.strftime("%b %d, %Y") %> to <%= @course.end_date.strftime("%b %d, %Y") %>
+</p>
+
+<%= link_to "Add Session", new_instructor_course_course_session_path(@course), class: "btn btn-success mb-3" %>
+
+<table class="table table-bordered table-hover table-striped align-middle">
+  <thead class="table-dark">
+  <tr>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @course_sessions.each do |session| %>
+    <tr>
+      <td><%= session.date.strftime("%A, %B %d, %Y") %></td>
+      <td>
+        <% if session.date == Date.today %>
+          <span class="badge bg-warning text-dark">Today</span>
+        <% elsif session.date < Date.today %>
+          <span class="badge bg-secondary">Past</span>
+        <% else %>
+          <span class="badge bg-info text-dark">Upcoming</span>
+        <% end %>
+      </td>
+      <td class="text-nowrap">
+        <%= link_to "Show", instructor_course_course_session_path(@course, session), class: "btn btn-sm btn-outline-primary me-1" %>
+        <%= link_to "Edit", edit_instructor_course_course_session_path(@course, session), class: "btn btn-sm btn-outline-secondary me-1" %>
+        <%= link_to "Delete", instructor_course_course_session_path(@course, session),
+                    method: :delete,
+                    data: { confirm: "Are you sure?" },
+                    class: "btn btn-sm btn-outline-danger" %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Back to Courses", instructor_courses_path, class: "btn btn-outline-dark mt-3" %>

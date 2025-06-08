@@ -1,0 +1,2 @@
+module Instructor::CourseSessionsHelper
+end

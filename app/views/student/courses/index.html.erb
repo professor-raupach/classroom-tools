@@ -1,0 +1,32 @@
+<h2 class="mb-4">Your Enrolled Courses</h2>
+<ul class="list-group mb-5">
+  <% @enrolled_courses.each do |course| %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong><%= course.course_number %></strong>: <%= course.title %>
+        <div class="text-muted small">Instructor: <%= course.instructor&.first_name %> <%= course.instructor&.last_name %></div>
+      </div>
+      <%= button_to "Drop", unenroll_student_course_path(course),
+                    method: :delete,
+                    class: "btn btn-outline-danger btn-sm",
+                    data: { turbo_confirm: "Are you sure you want to drop this course?" } %>
+    </li>
+  <% end %>
+</ul>
+
+
+<h2 class="mb-4">Available Courses</h2>
+<ul class="list-group">
+  <% @available_courses.each do |course| %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong><%= course.course_number %></strong>: <%= course.title %>
+        <div class="text-muted small">Instructor: <%= course.instructor&.first_name %> <%= course.instructor&.last_name %></div>
+      </div>
+      <%= button_to "Enroll", enroll_student_course_path(course),
+                    method: :post,
+                    class: "btn btn-primary btn-sm" %>
+    </li>
+  <% end %>
+</ul>
+

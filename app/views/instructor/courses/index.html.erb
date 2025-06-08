@@ -1,0 +1,5 @@
+<% content_for :title, "My Courses" %>
+<h1 class="mb-4">My Courses</h1>
+
+<%= render "shared/course_table", courses: @courses, route_prefix: :instructor, instructor_only: true %>
+<%= link_to "Add New Course", new_instructor_course_path, class: "btn btn-success mt-3" %>

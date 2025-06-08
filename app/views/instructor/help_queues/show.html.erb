@@ -1,0 +1,44 @@
+<% content_for :title, "Help Queue" %>
+
+<h1 class="mb-4">Help Queue for <%= @help_queue.course_session.course.course_number %></h1>
+<p><strong>Date:</strong> <%= @help_queue.course_session.date.strftime("%B %d, %Y") %></p>
+
+<div class="row">
+  <!-- Left column: QR Code -->
+  <div class="col-12 col-md-6 text-center mb-4">
+    <h3 class="mb-3">Scan to Join Help Queue</h3>
+
+    <div class="mb-3">
+      <%= qr_code_for(@help_queue) %>
+    </div>
+
+    <p class="text-muted">
+      Or go to: <code><%= short_help_request_url(help_queue_id: @help_queue.id) %></code>
+    </p>
+  </div>
+
+  <!-- Right column: Help Queue List -->
+  <div class="col-12 col-md-6" id="help_queue_list">
+    <%= render partial: "list", locals: { help_queue: @help_queue, help_requests: @help_requests } %>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+    function refreshHelpQueueList() {
+        fetch("<%= list_instructor_help_queue_path(@help_queue) %>")
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById("help_queue_list").innerHTML = html;
+            })
+            .catch(error => {
+                console.error("Error fetching help queue list:", error);
+            });
+    }
+
+    setInterval(refreshHelpQueueList, 5000); // Poll every 5 seconds
+</script>

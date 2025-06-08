@@ -1,0 +1,37 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  course_number: MyString
+  title: MyString
+  instructor: one
+  year: 1
+  semester: MyString
+  start_date: 2025-06-05
+  end_date: 2025-06-05
+  start_time: 2025-06-05 13:55:48
+  end_time: 2025-06-05 13:55:48
+  monday: false
+  tuesday: false
+  wednesday: false
+  thursday: false
+  friday: false
+  saturday: false
+  sunday: false
+
+two:
+  course_number: MyString
+  title: MyString
+  instructor: two
+  year: 1
+  semester: MyString
+  start_date: 2025-06-05
+  end_date: 2025-06-05
+  start_time: 2025-06-05 13:55:48
+  end_time: 2025-06-05 13:55:48
+  monday: false
+  tuesday: false
+  wednesday: false
+  thursday: false
+  friday: false
+  saturday: false
+  sunday: false

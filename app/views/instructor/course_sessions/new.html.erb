@@ -1,0 +1,7 @@
+<% content_for :title, "Add Session for #{@course.course_number} – #{@course.title}" %>
+
+<h1 class="mb-4">New Course Session</h1>
+
+<%= render "form", course_session: @course_session %>
+
+<%= link_to "Back to Sessions", instructor_course_course_sessions_path(@course), class: "btn btn-outline-secondary mt-3" %>

@@ -1,0 +1,62 @@
+<table class="table table-bordered table-hover table-striped align-middle">
+  <thead class="table-dark">
+  <tr>
+    <th>Course</th>
+    <% unless local_assigns[:instructor_only] %>
+      <th>Instructor</th>
+    <% end %>
+    <th>Term</th>
+    <th>Days</th>
+    <th>Time</th>
+    <th>Status</th>
+    <% if instructor_only %>
+      <th>Sessions</th>
+    <% end %>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% courses.each do |course| %>
+    <tr>
+      <td>
+        <strong><%= course.course_number %></strong><br>
+        <%= course.title %>
+      </td>
+      <% unless instructor_only %>
+        <td><%= course.instructor&.full_name || course.instructor&.email %></td>
+      <% end %>
+      <td><%= "#{course.semester} #{course.year}" %></td>
+      <td>
+        <% %w[monday tuesday wednesday thursday friday saturday sunday].each do |day| %>
+          <% if course.send(day) %>
+            <span class="badge bg-secondary"><%= day.capitalize[0,3] %></span>
+          <% end %>
+        <% end %>
+      </td>
+      <td>
+        <%= course.start_time.strftime("%l:%M %p") %> - <%= course.end_time.strftime("%l:%M %p") %>
+      </td>
+      <td>
+        <% if course.active? %>
+          <span class="badge bg-success">Active</span>
+        <% else %>
+          <span class="badge bg-secondary">Inactive</span>
+        <% end %>
+        <% if course.live? %>
+          <span class="badge bg-danger">Live</span>
+        <% end %>
+      </td><% if instructor_only %>
+        <td>
+          <%= link_to "View", instructor_course_course_sessions_path(course), class: "btn btn-sm btn-outline-primary me-1" %>
+          <%= link_to "New", new_instructor_course_course_session_path(course), class: "btn btn-sm btn-outline-success" %>
+        </td>
+      <% end %>
+      <td class="text-nowrap">
+        <%= link_to "Show", [route_prefix, course], class: "btn btn-sm btn-outline-primary me-1" %>
+        <%= link_to "Edit", [:edit, route_prefix, course], class: "btn btn-sm btn-outline-secondary me-1" %>
+        <%= link_to "Delete", [route_prefix, course], method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

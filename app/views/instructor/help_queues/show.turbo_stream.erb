@@ -1,0 +1,5 @@
+<turbo-stream target="help_queue_list" action="replace">
+  <template>
+    <%= render partial: "list", formats: [:html], locals: { help_queue: @help_queue, help_requests: @help_requests } %>
+  </template>
+</turbo-stream>

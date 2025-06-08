@@ -1,0 +1,23 @@
+<div class="container mt-5">
+  <div class="alert alert-success">
+    <h4 class="alert-heading">You're in the queue!</h4>
+    <p>You’ve been added to the help queue for
+      <strong><%= @help_queue.course_session.course.course_number %></strong>
+      on <%= @help_queue.course_session.date.strftime("%B %d, %Y") %>.
+    </p>
+    <hr>
+    <p class="mb-0">Your position in the queue: <strong>#<%= @position %></strong></p>
+  </div>
+
+  <p class="text-muted mt-3">
+    Please stay near your workstation. A tutor or instructor will assist you as soon as possible.
+  </p>
+
+  <div class="mt-4">
+    <%= button_to "Leave Queue",
+                  student_help_request_path(@help_request, help_queue_id: @help_queue),
+                  method: :delete,
+                  data: { confirm: "Are you sure you want to leave the help queue?" },
+                  class: "btn btn-outline-danger" %>
+  </div>
+</div>

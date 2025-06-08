@@ -1,0 +1,26 @@
+<%= form_with(model: [ :instructor, @course, course_session ], local: true) do |form| %>
+  <% if course_session.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(course_session.errors.count, "error") %> prohibited this session from being saved:</h4>
+      <ul>
+        <% course_session.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :date, class: "form-label" %>
+    <%= form.date_field :date, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :notes, class: "form-label" %>
+    <%= form.text_area :notes, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="mt-4">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

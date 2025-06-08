@@ -1,0 +1,11 @@
+<% content_for :title, "New course" %>
+
+<h1>New course</h1>
+
+<%= render "shared/courses/form", course: @course, namespace: :instructor %>
+
+<br>
+
+<div>
+  <%= link_to "Back to courses", instructor_courses_path %>
+</div>

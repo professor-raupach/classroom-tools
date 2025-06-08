@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render "shared/courses/course", course: @course, namespace: :admin %>
+
+<div>
+  <%= link_to "Edit this course", edit_admin_course_path(@course) %> |
+  <%= link_to "Back to courses", admin_courses_path %>
+
+  <%= button_to "Destroy this course", [:admin, @course], method: :delete %>
+</div>

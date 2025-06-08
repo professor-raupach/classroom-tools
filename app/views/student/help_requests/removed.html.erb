@@ -1,0 +1,12 @@
+<div class="container mt-5">
+  <div class="alert alert-warning">
+    <h4 class="alert-heading">You’ve left the help queue.</h4>
+    <p>You are no longer waiting for help in <strong><%= @course.course_number %></strong>.</p>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to "Rejoin Help Queue",
+                new_student_help_request_path(help_queue_id: @help_queue.id),
+                class: "btn btn-primary" %>
+  </div>
+</div>

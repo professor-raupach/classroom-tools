@@ -1,0 +1,94 @@
+<%= form_with(model: course, url: course_form_url(namespace, course), local: true) do |form| %>
+
+  <% if course.errors.any? %>
+    <div class="alert alert-danger">
+      <h4 class="alert-heading"><%= pluralize(course.errors.count, "error") %> prohibited this course from being saved:</h4>
+      <ul>
+        <% course.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :course_number, class: "form-label" %>
+    <%= form.text_field :course_number, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+
+
+    <div class="mb-3">
+      <%= form.label :instructor_id, "Instructor", class: "form-label" %>
+      <% if controller_path.start_with?("admin/") %>
+        <%= form.collection_select :instructor_id, User.where(instructor: true).order(:last_name, :first_name), :id, :full_name, { prompt: "Select Instructor" }, { class: "form-select" } %>
+      <% else %>
+      <%=  @course.instructor.full_name %>
+      <% end %>
+    </div>
+
+  <div class="mb-3">
+    <%= form.label :tutor_id, "Tutor", class: "form-label" %>
+    <%= form.collection_select :tutor_id,
+                               @course.students,
+                               :id,
+                               :full_name,
+                               { include_blank: true },
+                               { class: "form-select" } %>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :year, class: "form-label" %>
+      <%= form.number_field :year, class: "form-control" %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :semester, class: "form-label" %>
+      <%= form.select :semester, ["Fall", "Spring", "Summer", "Cyber"], {}, class: "form-select" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :start_date, class: "form-label" %>
+      <%= form.date_field :start_date, class: "form-control" %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :end_date, class: "form-label" %>
+      <%= form.date_field :end_date, class: "form-control" %>
+    </div>
+  </div>
+
+  <fieldset class="mb-3">
+    <legend class="col-form-label pt-0">Days of the Week</legend>
+    <% %w[monday tuesday wednesday thursday friday saturday sunday].each do |day| %>
+      <div class="form-check form-check-inline">
+        <%= form.check_box day, class: "form-check-input" %>
+        <%= form.label day, class: "form-check-label text-capitalize" %>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :start_time, class: "form-label" %>
+      <%= form.time_field :start_time, class: "form-control" %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :end_time, class: "form-label" %>
+      <%= form.time_field :end_time, class: "form-control" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

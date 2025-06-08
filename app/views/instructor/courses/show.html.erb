@@ -1,0 +1,11 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render "shared/courses/course", course: @course, namespace: :instructor %>
+
+<b>Hey</b>
+<div>
+  <%= link_to "Edit this course", edit_instructor_course_path(@course) %> |
+  <%= link_to "Back to courses", instructor_courses_path %>
+
+  <%= button_to "Destroy this course", [:instructor, @course], method: :delete %>
+</div>

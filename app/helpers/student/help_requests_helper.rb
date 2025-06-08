@@ -1,0 +1,2 @@
+module Student::HelpRequestsHelper
+end

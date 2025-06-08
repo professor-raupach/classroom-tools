@@ -1,0 +1,30 @@
+<% content_for :title, "Help Queue" %>
+
+<h1 class="mb-4">Start a Help Queue</h1>
+
+<% if notice %>
+  <div class="alert alert-success"><%= notice %></div>
+<% end %>
+
+<% if alert %>
+  <div class="alert alert-danger"><%= alert %></div>
+<% end %>
+
+<% if @live_courses.any? %>
+  <div class="mb-4">
+    <p>Select a live course to start a help queue:</p>
+    <ul class="list-group">
+      <% @live_courses.each do |course| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong><%= course.course_number %> – <%= course.title %></strong><br>
+            <small><%= course.semester %> <%= course.year %> | <%= course.start_time.strftime("%l:%M %p") %> – <%= course.end_time.strftime("%l:%M %p") %></small>
+          </div>
+          <%= button_to "Start Help Queue", instructor_help_queues_path(course_id: course.id), method: :post, class: "btn btn-primary" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <p>No courses are currently live. A course must be live (based on time, date, and day) to start a Help Queue.</p>
+<% end %>

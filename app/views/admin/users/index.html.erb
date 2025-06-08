@@ -1,0 +1,45 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Users" %>
+
+<h1 class="mb-4">All Users</h1>
+
+<table class="table table-bordered table-hover table-striped align-middle">
+  <thead class="table-dark">
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">Student ID</th>
+    <th scope="col">Email</th>
+    <th scope="col">Roles</th>
+    <th scope="col">Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= "#{user.first_name} #{user.last_name}" %></td>
+      <td><%= user.student_id %></td>
+      <td><%= user.email %></td>
+      <td>
+        <% if user.student? %>
+          <span class="badge bg-primary">Student</span>
+        <% end %>
+        <% if user.instructor? %>
+          <span class="badge bg-success">Instructor</span>
+        <% end %>
+        <% if user.admin? %>
+          <span class="badge bg-danger">Admin</span>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to "Show", [:admin, user], class: "btn btn-sm btn-outline-primary me-1" %>
+        <%= link_to "Edit", [:edit, :admin, user], class: "btn btn-sm btn-outline-secondary me-1" %>
+        <%= link_to "Delete", [:admin, user], method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Add New User", new_admin_user_path, class: "btn btn-success mt-3" %>

@@ -1,0 +1,8 @@
+<% content_for :title, "Manage Help Queue" %>
+
+<h1 class="mb-4">Manage Help Queue for <%= @help_queue.course_session.course.course_number %></h1>
+<p><strong>Date:</strong> <%= @help_queue.course_session.date.strftime("%B %d, %Y") %></p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <%= link_to "Refresh", manage_instructor_help_queue_path(@help_queue), class: "btn btn-outline-secondary" %>
+</div>
+<%= render partial: "list", locals: { help_queue: @help_queue, help_requests: @help_requests, editable: true } %>

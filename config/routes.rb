@@ -1,6 +1,73 @@
 Rails.application.routes.draw do
+  namespace :instructor do
+    get "help_queues/index"
+    get "help_queues/show"
+    get "help_queues/new"
+    get "help_queues/create"
+    get "courses/index"
+    get "courses/show"
+    get "courses/edit"
+    get "courses/update"
+    get "course_sessions/index"
+    get "course_sessions/new"
+    get "course_sessions/create"
+    get "course_sessions/edit"
+    get "course_sessions/update"
+    get "course_sessions/destroy"
+  end
+  namespace :student do
+    get "help_requests/new"
+    get "help_requests/create"
+    get "help_requests/destroy"
+    get "courses/index"
+    get "courses/enroll"
+  end
+
+
+  devise_for :users
+
+
+  namespace :admin do
+    resources :users
+    resources :courses
+  end
+
+  namespace :student do
+    resources :courses, only: [:index] do
+      member do
+        post :enroll
+        delete :unenroll
+      end
+    end
+    resources :help_requests, only: [:new, :create, :destroy, :show]do
+      get :removed, on: :collection
+    end
+  end
+  get "/hq/:help_queue_id", to: "student/help_requests#new", as: :short_help_request
+
+
+
+  namespace :instructor do
+    resources :help_queues, only: [:index, :new, :create, :show] do
+      member do
+        get :list  # /instructor/help_queues/:id/list
+        get :manage   # /instructor/help_queues/:id/manage (for instructors/tutors to manage)
+      end
+    end
+    resources :help_requests, only: [:destroy]
+    resources :courses do
+      resources :course_sessions, only: [:index, :new, :create, :edit, :update, :destroy]
+    end
+  end
+
+
+  devise_scope :user do
+    get '/users/sign_out' => 'devise/sessions#destroy'
+  end
+
   root "pages#home"
   get "pages/home"
+  # get "users/sign_out" => "pages#home"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

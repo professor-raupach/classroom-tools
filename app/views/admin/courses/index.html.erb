@@ -1,0 +1,7 @@
+<p style="color: green"><%= notice %></p>
+<% content_for :title, "Courses" %>
+<h1 class="mb-4">Courses</h1>
+
+<%= render "shared/course_table", courses: @courses, route_prefix: :admin, instructor_only: false %>
+
+<%= link_to "Add New Course", new_admin_course_path, class: "btn btn-success mt-3" %>

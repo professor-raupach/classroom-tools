@@ -1,0 +1,15 @@
+<h2 class="mb-3">Join Help Queue</h2>
+
+<p>
+  You're about to join the help queue for
+  <strong><%= @help_queue.course_session.course.course_number %></strong>
+  on <%= @help_queue.course_session.date.strftime("%A, %B %e") %>.
+</p>
+
+<%= form_with model: HelpRequest.new, url: student_help_requests_path, local: true do |form| %>
+  <%= hidden_field_tag "help_request[help_queue_id]", @help_queue.id %>
+
+  <div class="mb-3">
+    <%= form.submit "Join Queue", class: "btn btn-primary" %>
+  </div>
+<% end %>
