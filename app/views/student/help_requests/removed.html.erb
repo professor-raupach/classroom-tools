@@ -5,8 +5,9 @@
   </div>
 
   <div class="mt-4">
-    <%= link_to "Rejoin Help Queue",
-                new_student_help_request_path(help_queue_id: @help_queue.id),
-                class: "btn btn-primary" %>
+    <%= button_to "Rejoin Help Queue",
+                  student_help_requests_path(help_request:{help_queue_id: @help_queue.id}),
+                  method: :post,
+                  class: "btn btn-primary" %>
   </div>
 </div>
