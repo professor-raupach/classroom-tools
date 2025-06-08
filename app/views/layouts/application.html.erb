@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Teaching Site</title>
+  <title>Ohlone Course Assistant</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
 
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
         crossorigin="anonymous">
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <!-- Importmap for Rails 8 -->
   <%= javascript_importmap_tags %>
 
@@ -24,7 +25,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="/">Teaching Site</a>
+    <a class="navbar-brand" href="/">Ohlone Course Assistant</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -35,22 +36,38 @@
         <li class="nav-item">
           <a class="nav-link active" href="/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Courses</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Labs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
+
         <% if user_signed_in? %>
+          <% if current_user.admin? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Admin
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                <li><%= link_to "Courses", admin_courses_path, class: "dropdown-item" %></li>
+                <li><%= link_to "Users", admin_users_path, class: "dropdown-item" %></li>
+              </ul>
+            </li>
+          <% end %>
+
+          <% if current_user.instructor? %>
+            <li class="nav-item">
+              <%= link_to "My Courses", instructor_courses_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Help Queue", instructor_help_queues_path, class: "nav-link" %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Enroll", student_courses_path, class: "nav-link" %>
+            </li>
+          <% end %>
+
           <li class="nav-item">
-            <span class="nav-link">Signed in as <strong><%= current_user.email %></strong></span>
+            <span class="nav-link">Signed in as <strong><%= current_user.first_name %> <%= current_user.last_name[0] %></strong></span>
           </li>
           <li class="nav-item">
             <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "nav-link" %>
-
           </li>
         <% else %>
           <li class="nav-item">
@@ -61,6 +78,7 @@
           </li>
         <% end %>
       </ul>
+
     </div>
   </div>
 </nav>
@@ -82,8 +100,8 @@
 </main>
 
 <!-- Footer -->
-<footer class="bg-light text-center py-3 mt-5 border-top">
-  <small>&copy; <%= Time.now.year %> Paul Raupach. All rights reserved.</small>
+<footer class="text-center py-4 mt-5" style="background-color: #006341; color: white;">
+  &copy; <%= Time.current.year %> Ohlone College - Computer Science Department
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

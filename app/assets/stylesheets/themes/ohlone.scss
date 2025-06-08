@@ -1,0 +1,38 @@
+$ohlone-green: #006341;
+$ohlone-gold: #FFD100;
+$light-gray: #f7f7f7;
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: $light-gray;
+}
+
+.navbar {
+  background-color: $ohlone-green;
+
+  .navbar-brand,
+  .nav-link,
+  .dropdown-item {
+    color: white !important;
+  }
+
+  .nav-link:hover,
+  .dropdown-item:hover {
+    background-color: $ohlone-gold;
+    color: black !important;
+  }
+}
+
+.btn-primary {
+  background-color: $ohlone-green;
+  border-color: $ohlone-green;
+
+  &:hover {
+    background-color: darken($ohlone-green, 10%);
+    border-color: darken($ohlone-green, 10%);
+  }
+}
+
+.badge.bg-success {
+  background-color: $ohlone-green !important;
+}

@@ -48,16 +48,9 @@ module Instructor
 
       respond_to do |format|
         format.html # renders show.html.erb
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            "help_queue_list",
-            partial: "instructor/help_queues/list",
-            locals: { help_queue: @help_queue, help_requests: @help_requests }
-          )
         end
       end
 
-    end
 
     # app/controllers/instructor/help_queues_controller.rb
     def list

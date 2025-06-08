@@ -8,3 +8,43 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+/* app/assets/stylesheets/application.css */
+
+/* Ohlone Green and Gold Theme */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #1a1a1a;
+}
+
+.navbar {
+  background-color: #006341; /* Ohlone green */
+}
+
+.navbar a,
+.navbar-brand {
+  color: #ffffff !important;
+}
+
+.navbar .dropdown-menu {
+  background-color: #004d31;
+}
+
+.navbar .dropdown-item:hover {
+  background-color: #008c5f;
+  color: #ffffff;
+}
+
+h1, h2, h3 {
+  color: #006341;
+}
+
+.btn-primary {
+  background-color: #006341;
+  border-color: #006341;
+}
+
+.btn-primary:hover {
+  background-color: #004d31;
+  border-color: #004d31;
+}
