@@ -1,0 +1,16 @@
+<% content_for :title, "Attendance Confirmed" %>
+
+<h1>Thank You!</h1>
+
+<div class="alert alert-success">
+  You have been checked in for today's class.
+</div>
+
+<p><strong>Course:</strong> <%= @attendance.course_session.course.course_number %></p>
+<p><strong>Date:</strong> <%= @attendance.course_session.date.strftime("%B %d, %Y") %></p>
+<p><strong>Check-In Time:</strong> <%= @attendance.timestamp.strftime("%I:%M %p") %></p>
+
+<hr>
+
+<h4>Your Attendance Record</h4>
+<p>You have attended <strong><%= @attendance_percent %>%</strong> of sessions in this course.</p>

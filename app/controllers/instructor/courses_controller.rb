@@ -55,6 +55,21 @@ class Instructor::CoursesController < ApplicationController
     end
   end
 
+  def start_attendance
+    course = current_user.instructed_courses.find(params[:course_id])
+    today = Date.current
+
+    # Find or create the CourseSession for today
+    session = course.course_sessions.find_or_create_by!(date: today)
+
+    # Reopen attendance if it was previously ended
+    if session.attendance_checkin_ended_at.present?
+      session.update(attendance_checkin_ended_at: nil)
+    end
+
+    redirect_to instructor_course_course_session_attendance_checkin_path(course_id: course.id, course_session_id: session.id)
+  end
+
   private
 
   def set_course

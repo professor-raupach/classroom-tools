@@ -1,0 +1,11 @@
+<% content_for :title, "Attendance Closed" %>
+
+<div class="container mt-5">
+  <div class="alert alert-info text-center">
+    <h2 class="mb-3">✅ Attendance Check-in Closed</h2>
+    <p>The check-in period for <strong><%= @course_session.course.course_number %></strong> on <%= @course_session.date.strftime("%B %d, %Y") %> has ended.</p>
+    <p><strong>Closed at:</strong> <%= @course_session.attendance_checkin_ended_at.strftime("%I:%M %p") %></p>
+
+    <%= link_to "Back to Course", instructor_course_path(@course_session.course), class: "btn btn-primary mt-4" %>
+  </div>
+</div>

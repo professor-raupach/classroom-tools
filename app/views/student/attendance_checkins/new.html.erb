@@ -1,0 +1,19 @@
+<% content_for :title, "Attendance Check-In" %>
+
+<h1>Attendance Check-In</h1>
+
+<% if @course_session.attendance_closed? %>
+  <div class="alert alert-danger">
+    Attendance for this session is closed.
+  </div>
+<% else %>
+  <p><strong>Course:</strong> <%= @course_session.course.course_number %></p>
+  <p><strong>Date:</strong> <%= @course_session.date.strftime("%B %d, %Y") %></p>
+
+  <%= form_with url: student_attendance_checkins_path, method: :post do %>
+    <%= hidden_field_tag :course_session_id, @course_session.id %>
+    <%= hidden_field_tag :cookie_token, cookies[:attendance_token] %>
+
+    <%= submit_tag "Check In", class: "btn btn-success mt-3" %>
+  <% end %>
+<% end %>

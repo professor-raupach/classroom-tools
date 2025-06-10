@@ -49,6 +49,9 @@
         <td>
           <%= link_to "View", instructor_course_course_sessions_path(course), class: "btn btn-sm btn-outline-primary me-1" %>
           <%= link_to "New", new_instructor_course_course_session_path(course), class: "btn btn-sm btn-outline-success" %>
+          <%= button_to "Start Attendance", instructor_course_start_attendance_path(course),
+                        method: :post,
+                        class: "btn btn-outline-primary btn-sm" %>
         </td>
       <% end %>
       <td class="text-nowrap">

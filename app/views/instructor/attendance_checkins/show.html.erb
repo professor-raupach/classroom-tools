@@ -1,0 +1,73 @@
+<% content_for :title, "Attendance Check-In" %>
+
+<h1>Attendance Check-In for <%= @course_session.course.course_number %></h1>
+<p><strong>Date:</strong> <%= @course_session.date.strftime("%B %d, %Y") %></p>
+
+<div class="row">
+  <div class="col-md-6 text-center">
+    <h3>Scan QR to Check In</h3>
+    <div class="mb-3">
+      <%= qr_code_for_checkin(@course_session) %>
+    </div>
+    <p>
+      Or visit: <code><%= short_attendance_checkin_url(@course_session) %></code>
+    </p>
+  </div>
+
+  <div class="col-md-6 text-center">
+    <h3>Time Remaining</h3>
+    <div id="countdown-timer" class="display-4 mb-3">Loading...</div>
+
+    <form id="end-attendance-form" action="<%= end_instructor_course_course_session_attendance_checkin_path(@course_session.course, @course_session) %>" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <button type="submit" class="btn btn-danger">End Now</button>
+    </form>
+  </div>
+</div>
+
+<script>
+    let attendanceTimerId;
+
+    function startAttendanceCountdown() {
+        // Always reset duration from server-passed value
+        let duration = <%= @duration_seconds || 300 %>; // fallback to 5 minutes
+        const timerDisplay = document.getElementById('countdown-timer');
+
+        if (!timerDisplay) return;
+
+        // Clear any existing timer
+        clearInterval(attendanceTimerId);
+
+        function updateCountdown() {
+            const minutes = Math.floor(duration / 60);
+            const seconds = duration % 60;
+            timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            if (duration <= 0) {
+                clearInterval(attendanceTimerId);
+                const form = document.getElementById('end-attendance-form');
+                if (form) form.submit();
+            }
+
+            duration--;
+        }
+
+        // Start immediately and every second
+        updateCountdown();
+        attendanceTimerId = setInterval(updateCountdown, 1000);
+    }
+
+    document.addEventListener("turbo:load", function () {
+        const controller = document.body.dataset.controllerName;
+        const action = document.body.dataset.actionName;
+
+        if (controller === "attendance_checkins" && action === "show") {
+            startAttendanceCountdown();
+        }
+    });
+
+    document.addEventListener("turbo:before-cache", function () {
+        clearInterval(attendanceTimerId); // stop timer before caching DOM
+    });
+</script>
+

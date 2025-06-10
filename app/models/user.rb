@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :enrolled_courses, through: :enrollments, source: :course
   has_many :instructed_courses, class_name: "Course", foreign_key: "instructor_id", dependent: :nullify
   has_many :help_requests
+  has_many :attendances
+  has_many :attended_sessions, through: :attendances, source: :course_session
+
 
   def full_name
     "#{self.first_name} #{self.last_name}"
