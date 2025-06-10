@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_09_220138) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_10_013429) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,6 +23,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_220138) do
     t.string "cookie_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
     t.index ["course_session_id"], name: "index_attendances_on_course_session_id"
     t.index ["user_id", "course_session_id"], name: "index_attendances_on_user_id_and_course_session_id", unique: true
     t.index ["user_id"], name: "index_attendances_on_user_id"

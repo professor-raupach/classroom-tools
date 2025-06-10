@@ -61,7 +61,7 @@ Rails.application.routes.draw do
     resources :help_requests, only: [:destroy]
     resources :courses do
       post :start_attendance  # triggers find-or-create CourseSession and redirects
-      resources :course_sessions, only: [:index, :new, :create, :edit, :update, :destroy] do
+      resources :course_sessions, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
         resource :attendance_checkin, only: [:show, :create] do
           post :end  # for when countdown expires
           get :closed # for closed screen

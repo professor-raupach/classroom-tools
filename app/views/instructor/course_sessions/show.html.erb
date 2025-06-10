@@ -1,0 +1,97 @@
+<% content_for :title, "Attendance Report" %>
+
+<h1>Attendance for <%= @course_session.date.strftime("%B %d, %Y") %></h1>
+
+<p><strong>Course:</strong> <%= @course.course_number %> - <%= @course.title %></p>
+<p><strong>Status:</strong>
+  <% if @course_session.attendance_closed? %>
+    Closed at <%= @course_session.attendance_checkin_ended_at.strftime("%I:%M %p") %>
+  <% else %>
+    Open
+  <% end %>
+</p>
+
+<% duplicate_tokens = @attendances
+  .group_by(&:cookie_token)
+  .select { |token, records| token.present? && records.size > 1 } %>
+
+<% if duplicate_tokens.any? %>
+  <div class="alert alert-warning">
+    <strong>Warning:</strong> The following <%= pluralize(duplicate_tokens.size, "cookie token") %> were used more than once:
+    <ul>
+      <% duplicate_tokens.each do |token, records| %>
+        <li>
+          Token: <code><%= truncate(token, length: 30) %></code> —
+          Used by: <%= records.map { |r| r.user.full_name }.join(", ") %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<% flagged = @attendances.select { |att| outside_ohlone?(att.latitude, att.longitude) } %>
+
+<% if flagged.any? %>
+  <div class="alert alert-warning">
+    <h5>⚠️ Location Mismatch Warning</h5>
+    <p>The following students checked in from outside the expected area near Ohlone College:</p>
+    <ul>
+      <% flagged.each do |att| %>
+        <li>
+          <strong><%= att.user.full_name %></strong> at
+          <a href="https://www.google.com/maps?q=<%= att.latitude %>,<%= att.longitude %>" target="_blank" rel="noopener">
+            <%= att.latitude %>, <%= att.longitude %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
+<% if @attendances.any? %>
+  <table class="table table-bordered table-striped mt-4">
+    <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>Student</th>
+      <th>Checked In At</th>
+      <th>IP Address</th>
+      <th>Location (Lat, Long)</th>
+      <th>User Agent</th>
+      <th>Cookie Token</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @attendances.each_with_index do |attendance, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= attendance.user.full_name %></td>
+        <td><%= attendance.timestamp.strftime("%I:%M %p") %></td>
+        <td><%= attendance.ip_address %></td>
+        <td>
+          <% if attendance.latitude && attendance.longitude %>
+            <a href="https://www.google.com/maps?q=<%= attendance.latitude %>,<%= attendance.longitude %>" target="_blank" rel="noopener">
+              <%= attendance.latitude %>, <%= attendance.longitude %>
+            </a>
+          <% else %>
+            <em>No data</em>
+          <% end %>
+        </td>
+        <td><%= truncate(attendance.user_agent, length: 50) %></td>
+        <td>
+          <% if attendance.cookie_token.present? %>
+            <%= attendance.cookie_token %>
+          <% else %>
+            <em>None</em>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-info mt-4">No students have checked in yet.</div>
+<% end %>
+
+<%= link_to "Back to Course", instructor_course_course_session_path(@course, @course_session), class: "btn btn-secondary mt-4" %>

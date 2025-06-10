@@ -13,7 +13,27 @@
   <%= form_with url: student_attendance_checkins_path, method: :post do %>
     <%= hidden_field_tag :course_session_id, @course_session.id %>
     <%= hidden_field_tag :cookie_token, cookies[:attendance_token] %>
+    <%= hidden_field_tag :latitude, id: "latitude" %>
+    <%= hidden_field_tag :longitude, id: "longitude" %>
 
     <%= submit_tag "Check In", class: "btn btn-success mt-3" %>
   <% end %>
 <% end %>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    document.getElementById("latitude").value = position.coords.latitude;
+                    document.getElementById("longitude").value = position.coords.longitude;
+                },
+                (error) => {
+                    console.warn("Geolocation error:", error.message);
+                }
+            );
+        } else {
+            console.warn("Geolocation not supported.");
+        }
+    });
+</script>

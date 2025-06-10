@@ -14,6 +14,7 @@ module Student
 
     def create
       @course_session = CourseSession.find(params[:course_session_id])
+
       if @course_session.attendance_closed?
         redirect_to root_path, alert: "Attendance is already closed."
         return
@@ -32,7 +33,9 @@ module Student
         timestamp: Time.current,
         ip_address: request.remote_ip,
         user_agent: request.user_agent,
-        cookie_token: cookies.signed[:checkin_secret]
+        cookie_token: cookies.signed[:checkin_secret],
+        latitude: attendance_params[:latitude],
+        longitude: attendance_params[:longitude]
       )
 
       redirect_to student_attendance_checkin_path(@attendance)
@@ -60,6 +63,10 @@ module Student
 
     def set_course_session
       @course_session = CourseSession.find(params[:id])
+    end
+
+    def attendance_params
+      params.permit(:latitude, :longitude)
     end
   end
 end

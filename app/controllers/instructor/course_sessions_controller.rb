@@ -18,6 +18,13 @@ class Instructor::CourseSessionsController < ApplicationController
     end
   end
 
+  def show
+    @course = Course.find(params[:course_id])
+    @course_session = @course.course_sessions.find(params[:id])
+    @attendances = @course_session.attendances.includes(:user).order(:timestamp)
+  end
+
+
   def destroy
     @help_request = HelpRequest.find(params[:id])
     @help_request.destroy
