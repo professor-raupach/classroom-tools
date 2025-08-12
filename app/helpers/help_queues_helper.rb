@@ -3,7 +3,7 @@ module HelpQueuesHelper
     require 'rqrcode'
 
     url = short_help_request_url(help_queue.id)
-    url = "http://192.168.1.25:3000/hq/#{help_queue.id}"
+    # url = "http://192.168.1.25:3000/hq/#{help_queue.id}"
 
     qrcode = RQRCode::QRCode.new(url)
     svg = qrcode.as_svg(

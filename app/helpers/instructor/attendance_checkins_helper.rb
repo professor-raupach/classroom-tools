@@ -3,7 +3,7 @@ module Instructor::AttendanceCheckinsHelper
     require 'rqrcode'
 
     url = short_attendance_checkin_url(course_session)
-    url = "http://192.168.1.2:3000/ac/#{course_session.id}"
+    # url = "http://192.168.1.2:3000/ac/#{course_session.id}"
     qrcode = RQRCode::QRCode.new(url)
 
     svg = qrcode.as_svg(
