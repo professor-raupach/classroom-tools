@@ -1,0 +1,49 @@
+<%# Shared report view used by both Admin and Instructor controllers %>
+<%# Renders the table partial and provides CSV/download actions %>
+
+<%# Choose the correct CSV path based on namespace %>
+<% csv_path =
+     if request.path.include?("/admin/")
+       attendance_report_csv_admin_course_path(@course)
+     else
+       attendance_report_csv_instructor_course_path(@course)
+     end
+%>
+
+<div class="report-header" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+  <div>
+    <h1 style="margin:0;">Attendance Report — <%= @course.title %></h1>
+    <% if @sessions.any? %>
+      <p style="margin:.25rem 0 0 0;color:#555;">
+        <%= pluralize(@students.size, "student") %> •
+        <%= pluralize(@sessions.size, "session") %>
+      </p>
+    <% end %>
+  </div>
+
+  <div class="actions" style="display:flex;gap:.5rem;">
+    <%= link_to "Download CSV", csv_path, class: "btn btn-primary", style: "padding:.5rem .75rem;border:1px solid #ccc;border-radius:.5rem;text-decoration:none;" %>
+    <%= link_to "Back", (request.referer || :back), class: "btn", style: "padding:.5rem .75rem;border:1px solid #ccc;border-radius:.5rem;text-decoration:none;" %>
+  </div>
+</div>
+
+<% if @students.blank? || @sessions.blank? %>
+  <div class="empty-state" style="margin-top:1rem;padding:1rem;border:1px dashed #ccc;border-radius:.5rem;">
+    <p>
+      <% if @students.blank? && @sessions.blank? %>
+        This course has no enrolled students and no sessions yet.
+      <% elsif @students.blank? %>
+        This course has no enrolled students yet.
+      <% else %>
+        This course has no sessions yet.
+      <% end %>
+    </p>
+  </div>
+<% else %>
+  <%= render partial: "attendance_reports/table",
+             locals: { course: @course,
+                       students: @students,
+                       sessions: @sessions,
+                       presence_index: @presence_index,
+                       present_by_session_id: @present_by_session_id } %>
+<% end %>

@@ -13,6 +13,7 @@
       <th>Sessions</th>
     <% end %>
     <th></th>
+    <th>Reports</th>
   </tr>
   </thead>
   <tbody>
@@ -58,6 +59,15 @@
         <%= link_to "Show", [route_prefix, course], class: "btn btn-sm btn-outline-primary me-1" %>
         <%= link_to "Edit", [:edit, route_prefix, course], class: "btn btn-sm btn-outline-secondary me-1" %>
         <%= link_to "Delete", [route_prefix, course], method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
+      </td>
+      <td>
+        <%= link_to "Attendance Report",
+                    attendance_report_path_for(course),
+                    class: "btn btn-sm btn-primary" %>
+        <%= link_to "CSV",
+                    attendance_report_csv_path_for(course),
+                    class: "btn btn-sm btn-outline-secondary",
+                    style: "margin-left:.25rem" %>
       </td>
     </tr>
   <% end %>

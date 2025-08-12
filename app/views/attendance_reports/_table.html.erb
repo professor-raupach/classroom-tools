@@ -1,0 +1,64 @@
+<%# Partial that renders the matrix: rows = students, columns = sessions, plus totals %>
+<% total_sessions  = sessions.size %>
+<% total_students  = students.size %>
+
+<div class="table-wrap" style="margin-top:1rem;max-width:100%;overflow:auto;border:1px solid #e5e7eb;border-radius:.5rem;">
+  <table class="table table-striped table-bordered" style="border-collapse:separate;border-spacing:0;min-width:max-content;width:100%;">
+    <thead style="position:sticky;top:0;background:#f8fafc;z-index:2;">
+    <tr>
+      <th style="position:sticky;left:0;background:#f8fafc;z-index:3;padding:.5rem .75rem;text-align:left;">Student</th>
+      <% sessions.each do |sess| %>
+        <th style="padding:.5rem .75rem;text-align:center;white-space:nowrap;">
+          <%= sess.respond_to?(:date) && sess.date.present? ? sess.date.strftime("%Y-%m-%d") : sess.id %>
+        </th>
+      <% end %>
+      <th style="padding:.5rem .75rem;text-align:right;white-space:nowrap;">Total</th>
+      <th style="padding:.5rem .75rem;text-align:right;white-space:nowrap;">%</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% students.each do |stu| %>
+      <% present_count = 0 %>
+      <tr>
+        <td style="position:sticky;left:0;background:#fff;z-index:1;padding:.5rem .75rem;white-space:nowrap;">
+          <%= [stu.last_name, stu.first_name].compact.join(", ") %>
+        </td>
+
+        <% sessions.each do |sess| %>
+          <% present = present_for?(stu.id, sess.id) %>
+          <% present_count += 1 if present %>
+          <td style="padding:.5rem .75rem;text-align:center;"><%= present ? "✓" : "" %></td>
+        <% end %>
+
+        <td style="padding:.5rem .75rem;text-align:right;"><%= present_count %></td>
+        <td style="padding:.5rem .75rem;text-align:right;"><%= percent(present_count, total_sessions) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+
+    <tfoot>
+    <% session_counts   = sessions.map { |s| present_by_session_id[s.id] || 0 } %>
+    <% overall_present  = session_counts.sum %>
+    <% overall_possible = total_sessions * total_students %>
+
+    <tr style="background:#f8fafc;">
+      <th style="position:sticky;left:0;background:#f8fafc;z-index:2;padding:.5rem .75rem;text-align:left;">Totals</th>
+
+      <% session_counts.each do |count| %>
+        <th style="padding:.5rem .75rem;text-align:center;">
+          <%= count %>/<%= total_students %>
+          (<%= percent(count, total_students) %>)
+        </th>
+      <% end %>
+
+      <th style="padding:.5rem .75rem;text-align:right;white-space:nowrap;">
+        <%= overall_present %>/<%= overall_possible %>
+      </th>
+      <th style="padding:.5rem .75rem;text-align:right;white-space:nowrap;">
+        <%= percent(overall_present, overall_possible) %>
+      </th>
+    </tr>
+    </tfoot>
+  </table>
+</div>

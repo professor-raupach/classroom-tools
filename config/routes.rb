@@ -32,7 +32,12 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
-    resources :courses
+    resources :courses do
+      member do
+        get :attendance_report, to: "attendance_reports#show"
+        get :attendance_report_csv, to: "attendance_reports#csv"
+      end
+    end
   end
 
   namespace :student do
@@ -60,6 +65,10 @@ Rails.application.routes.draw do
     end
     resources :help_requests, only: [:destroy]
     resources :courses do
+      member do
+        get :attendance_report, to: "attendance_reports#show"
+        get :attendance_report_csv, to: "attendance_reports#csv"
+      end
       post :start_attendance  # triggers find-or-create CourseSession and redirects
       resources :course_sessions, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
         resource :attendance_checkin, only: [:show, :create] do
@@ -68,7 +77,10 @@ Rails.application.routes.draw do
         end
       end
     end
+
   end
+
+
 
 
 
