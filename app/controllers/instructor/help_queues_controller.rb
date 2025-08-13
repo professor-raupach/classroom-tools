@@ -4,7 +4,7 @@ module Instructor
     before_action :require_instructor!
 
     def index
-      @live_courses = current_user.instructed_courses.live
+      @live_courses = current_user.instructed_courses.select(&:live?)
       @help_queues = current_user.instructed_courses
                                  .includes(course_sessions: :help_queue)
                                  .flat_map(&:course_sessions)
