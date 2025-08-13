@@ -41,6 +41,8 @@ Rails.application.routes.draw do
       member do
         get :attendance_report, to: "attendance_reports#show"
         get :attendance_report_csv, to: "attendance_reports#csv"
+        get :roster,       to: "rosters#show"
+        get :roster_csv,   to: "rosters#csv"
       end
       post :start_attendance  # triggers find-or-create CourseSession and redirects
       resources :course_sessions, only: [:index, :show, :new, :create, :edit, :update, :destroy] do

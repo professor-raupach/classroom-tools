@@ -1,0 +1,46 @@
+<!-- app/views/instructor/rosters/show.html.erb -->
+<h1 class="mb-3">Class Roster — <%= @course.title %></h1>
+<p class="text-muted mb-3">
+  <%= pluralize(@students.size, "student") %> •
+  <%= pluralize(@sessions.size, "session") %>
+</p>
+
+<div class="d-flex gap-2 mb-3">
+  <%= link_to "Download CSV", roster_csv_instructor_course_path(@course), class: "btn btn-outline-secondary" %>
+  <%= link_to "Back to My Courses", instructor_courses_path, class: "btn btn-link" %>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+      <tr>
+        <th scope="col">Last Name</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Student ID</th>
+        <th scope="col" class="text-end">Attendance</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @students.each do |s| %>
+        <% attended = @attended_by_user_id[s.id].to_i %>
+        <tr>
+          <td><%= s.last_name %></td>
+          <td><%= s.first_name %></td>
+          <td><%= s.email %></td>
+          <td><%= (s.respond_to?(:student_id) && s.student_id.present?) ? s.student_id : (s.respond_to?(:username) ? s.username : "") %></td>
+          <td class="text-end">
+            <% if @total_sessions.positive? %>
+              <%= "#{attended} / #{@total_sessions}" %>
+              <span class="text-muted">(<%= ((attended.to_f / @total_sessions) * 100).round %>%)</span>
+            <% else %>
+              0 / 0 <span class="text-muted">(0%)</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -61,6 +61,7 @@
         <%= link_to "Delete", [route_prefix, course], method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
       </td>
       <td>
+        <%= link_to "Roster", roster_instructor_course_path(course), class: "btn btn-sm btn-outline-primary" %>
         <%= link_to "Attendance Report",
                     attendance_report_path_for(course),
                     class: "btn btn-sm btn-primary" %>
