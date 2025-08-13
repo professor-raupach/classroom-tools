@@ -6,7 +6,7 @@
         <strong><%= course.course_number %></strong>: <%= course.title %>
         <div class="text-muted small">Instructor: <%= course.instructor&.first_name %> <%= course.instructor&.last_name %></div>
       </div>
-      <%= button_to "Drop", unenroll_student_course_path(course),
+      <%# button_to "Drop", unenroll_student_course_path(course),
                     method: :delete,
                     class: "btn btn-outline-danger btn-sm",
                     data: { turbo_confirm: "Are you sure you want to drop this course?" } %>

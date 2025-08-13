@@ -1,0 +1,83 @@
+<%# app/views/home/_instructor_dashboard.html.erb %>
+<h1 class="mb-3">Instructor Dashboard</h1>
+<p class="text-muted">Quick access to your live sessions, upcoming classes, and reports.</p>
+
+<%= render "home/tiles" do %>
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-header">Live Now</div>
+      <div class="card-body">
+        <% if live_courses.present? %>
+          <ul class="list-unstyled mb-0">
+            <% live_courses.each do |c| %>
+              <li class="mb-2 d-flex align-items-center">
+                <strong><%= "#{c.course_number} - #{c.title}" %></strong>
+                <%= button_to "Start Attendance",
+                              instructor_course_start_attendance_path(c),
+                              method: :post,
+                              class: "btn btn-primary btn-sm ms-2" %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="mb-0">No courses are live at the moment.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card h-100">
+      <div class="card-header">My Courses</div>
+      <div class="card-body p-0">
+        <% if courses.present? %>
+          <table class="table mb-0">
+            <thead>
+            <tr>
+              <th>Course</th>
+              <th>Sessions</th>
+              <th>Students</th>
+              <th>Reports</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% courses.each do |c| %>
+              <tr>
+                <td><%= c.title %></td>
+                <td><%= c.course_sessions.count %></td>
+                <td><%= c.respond_to?(:enrolled_students) ? c.enrolled_students.count : c.enrollments.count %></td>
+                <td>
+                  <%= link_to "Attendance", attendance_report_path_for(c), class: "btn btn-sm btn-primary" %>
+                  <%= link_to "CSV", attendance_report_csv_path_for(c), class: "btn btn-sm btn-outline-secondary" %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="p-3 mb-0">You don’t have any courses yet.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">Upcoming (next 7 days)</div>
+      <div class="card-body">
+        <% if upcoming_sessions.present? %>
+          <ul class="list-group list-group-flush">
+            <% upcoming_sessions.each do |s| %>
+              <li class="list-group-item">
+                <strong><%= s.course.title %></strong> — <%= s.date&.strftime("%a %b %-d") %>
+                <% if s.course.start_time %>, <%= s.course.start_time.strftime("%-I:%M %p") %><% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="mb-0">No sessions in the next week.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,49 @@
+<%# app/views/home/_admin_dashboard.html.erb %>
+<h1 class="mb-3">Admin Dashboard</h1>
+<p class="text-muted">Overview of recent courses and live activity.</p>
+
+<%= render "home/tiles" do %>
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-header">Live Now</div>
+      <div class="card-body">
+        <% if live_courses.present? %>
+          <ul class="list-unstyled mb-0">
+            <% live_courses.each do |c| %>
+              <li class="mb-2 d-flex align-items-center">
+                <strong><%= "#{c.course_number} - #{c.title}" %></strong>
+                <%= button_to "Start Attendance",
+                              instructor_course_start_attendance_path(c),
+                              method: :post,
+                              class: "btn btn-primary btn-sm ms-2" %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="mb-0">No courses are live at the moment.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header">Recent Courses</div>
+      <div class="card-body">
+        <% if courses.present? %>
+          <ul class="list-unstyled mb-0">
+            <% courses.each do |c| %>
+              <li>
+                <strong><%= c.title %></strong>
+                <%= link_to "Attendance", attendance_report_admin_course_path(c), class: "btn btn-link btn-sm" %>
+                <%= link_to "CSV", attendance_report_csv_admin_course_path(c), class: "btn btn-outline-secondary btn-sm" %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="mb-0">No courses found.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

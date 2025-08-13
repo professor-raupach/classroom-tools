@@ -1,0 +1,18 @@
+<%# Role-aware homepage: renders the appropriate dashboard partial %>
+
+<% if @is_admin %>
+  <%= render "home/admin_dashboard",
+             courses: @courses,
+             live_courses: @live_courses %>
+
+<% elsif @is_instructor %>
+  <%= render "home/instructor_dashboard",
+             courses: @courses,
+             live_courses: @live_courses,
+             upcoming_sessions: @upcoming_sessions %>
+
+<% else %>
+  <%= render "home/student_dashboard",
+             courses: @courses,
+             today_sessions: @today_sessions %>
+<% end %>

@@ -1,31 +1,4 @@
 Rails.application.routes.draw do
-  # namespace :instructor do
-  #   get "attendance_checkins/show"
-  #   get "attendance_checkins/create"
-  #   get "attendance_checkins/end"
-  #   get "help_queues/index"
-  #   get "help_queues/show"
-  #   get "help_queues/new"
-  #   get "help_queues/create"
-  #   get "courses/index"
-  #   get "courses/show"
-  #   get "courses/edit"
-  #   get "courses/update"
-  #   get "course_sessions/index"
-  #   get "course_sessions/new"
-  #   get "course_sessions/create"
-  #   get "course_sessions/edit"
-  #   get "course_sessions/update"
-  #   get "course_sessions/destroy"
-  # end
-  # namespace :student do
-  #   get "help_requests/new"
-  #   get "help_requests/create"
-  #   get "help_requests/destroy"
-  #   get "courses/index"
-  #   get "courses/enroll"
-  # end
-
 
   devise_for :users
 
@@ -90,8 +63,8 @@ Rails.application.routes.draw do
     get '/users/sign_out' => 'devise/sessions#destroy'
   end
 
-  root "pages#home"
-  get "pages/home"
+  root "home#index"
+  # get "pages/home"
   # get "users/sign_out" => "pages#home"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
